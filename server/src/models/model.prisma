@@ -1,0 +1,84 @@
+model User {
+  userId            Int    @id @default(autoincrement())
+  email             String @unique
+  name              String
+  profilePictureUrl String
+
+  // 1000MB = 1GB max storage quota
+  maxStorageQuotaMB Int @default(1000)
+
+  // Connects to user ownership table (UserResource)
+  UserResource UserResource[]
+}
+
+model UserResource {
+  userResourceId Int        @id @default(autoincrement())
+  userId         Int
+  resourceId     String
+  permission     Permission @default(viewer)
+
+  User     User     @relation(fields: [userId], references: [userId])
+  Resource Resource @relation(fields: [resourceId], references: [resourceId], onDelete: Cascade)
+}
+
+model Resource {
+  resourceId       String       @id @default(uuid())
+  parentResourceId String?
+  type             ResourceType
+
+  // Billing target user, the user which will get charged for the created storage
+  trueOwnerId Int
+
+  // Self referencing to allow cascade deleting of resource node (e.g. when folder is deleted, all of its children subtree will also get deleted)
+  parent   Resource?  @relation("NodeToChildren", fields: [parentResourceId], references: [resourceId], onDelete: Cascade)
+  children Resource[] @relation("NodeToChildren")
+
+  // Connects to either file or folder
+  File   File?
+  Folder Folder?
+
+  // Connects to user ownership table (UserResource)
+  UserResource UserResource[]
+}
+
+// Resource -> File
+model File {
+  fileId     String   @id @default(uuid())
+  resourceId String   @unique
+  name       String
+  createdAt  DateTime @default(now())
+  fileKey    String
+  fileSizeMB Int
+  type       FileType
+
+  resource Resource @relation(fields: [resourceId], references: [resourceId], onDelete: Cascade)
+}
+
+// Resource -> Folder
+model Folder {
+  folderId   String   @id @default(uuid())
+  resourceId String   @unique
+  name       String
+  createdAt  DateTime @default(now())
+
+  resource Resource @relation(fields: [resourceId], references: [resourceId], onDelete: Cascade)
+}
+
+enum FileType {
+  audio
+  docs
+  pdf
+  other
+  // TBA
+}
+
+enum Permission {
+  owner
+  viewer
+  editor
+}
+
+enum ResourceType {
+  file
+  folder
+}
