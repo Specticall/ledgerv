@@ -1,6 +1,6 @@
 import axios from "axios";
-import { loginWithGoogle } from "./AuthService";
 import { UserRepository } from "../repository";
+import AuthService from "./AuthService";
 
 jest.mock("axios");
 const mockAxios = axios as jest.Mocked<typeof axios>;
@@ -19,7 +19,7 @@ it("should create a user when a google token is given for the first time", async
     data: mockGoogleAPIResponse,
   });
 
-  const result = await loginWithGoogle("fake-token");
+  const result = await AuthService.loginWithGoogle("fake-token");
 
   // Ensures a new user is created for the first login
   const newUser = await UserRepository.getUserByEmail(

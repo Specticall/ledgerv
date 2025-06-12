@@ -1,7 +1,6 @@
 {
   "scripts": {
-    "containers:up": "dotenvx run -f .env.development -- docker-compose up -d",
-    "containers:down": "dotenvx run -f .env.development -- docker-compose down"
+    "test": "bash ./scripts/run-test.sh"
   },
   "dependencies": {
     "@dotenvx/dotenvx": "^1.44.1"
