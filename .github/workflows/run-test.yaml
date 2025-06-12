@@ -24,5 +24,9 @@ jobs:
           touch .env.test
           echo "${{ secrets.ENV_FILE }}" >> .env.test
 
+      - name: Test ENV
+        run: |
+          echo "${{ secrets.ENV_FILE }}"
+
       - name: Run Tests
         run: npm run test
