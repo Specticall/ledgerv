@@ -1,8 +1,12 @@
 {
   "scripts": {
-    "test": "bash ./scripts/run-test.sh"
+    "test": "bash ./scripts/run-test.sh",
+    "dev": "bash ./scripts/run-dev.sh"
   },
   "dependencies": {
     "@dotenvx/dotenvx": "^1.44.1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
   }
 }

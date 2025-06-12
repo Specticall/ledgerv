@@ -151,7 +151,10 @@ const updateResourceById = async (
 
 const getStorageUsedByUserIdQuerySchema = z.array(
   z.object({
-    sum: z.bigint().transform((val) => Number(val)),
+    sum: z
+      .bigint()
+      .transform((val) => Number(val))
+      .or(z.null()),
   })
 );
 const getStorageUsedByUserId = async (userId: number): Promise<number> => {
@@ -166,7 +169,7 @@ const getStorageUsedByUserId = async (userId: number): Promise<number> => {
   if (parsedResult.error) {
     throw new Error("Invalid query return type shape");
   }
-  return parsedResult.data[0].sum;
+  return parsedResult.data[0].sum || 0;
 };
 
 export default {

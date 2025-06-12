@@ -1,7 +1,7 @@
 services:
-  storage:
+  storage_test:
     image: quay.io/minio/minio:latest
-    container_name: minio
+    container_name: minio_test
     ports:
       - "${MINIO_PORT}:9000" # S3 API
       - "${MINIO_UI_PORT}:9001" # Web UI
@@ -18,10 +18,10 @@ services:
       retries: 5
 
   # Separate container to configure `storage` service (minio) by creating a bucket. the CLI tool `mc` inside the image can work cross container
-  storage_init:
+  storage_test_init:
     image: quay.io/minio/minio:latest
     depends_on:
-      storage:
+      storage_test:
         condition: service_healthy
     entrypoint: >
       /bin/sh -c "

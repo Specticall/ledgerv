@@ -27,7 +27,7 @@ if [ "$TEST_DB_STARTED" != "$TEST_DB_SERVICE_NAME" ]; then
   # Hack : assumes if the container needs to be started the database has not been migrated
   rm -f "${SCRIPT_DIR}/marker/${DB_MIGRATED_MARKER_NAME}"
 else
-  echo "Container already started... Skipping Database Migration"
+  echo "Container already started..."
 fi
 
 
@@ -41,6 +41,8 @@ if [ ! -f "${SCRIPT_DIR}/marker/${DB_MIGRATED_MARKER_NAME}" ]; then
 
   # 2.5 Create a marker file to know that the database has been migrated for faster tests
   (cd "${SCRIPT_DIR}/marker" && touch ${DB_MIGRATED_MARKER_NAME})
+else
+  echo "Database already migrated..."
 fi
 
 #3. Run the tests
