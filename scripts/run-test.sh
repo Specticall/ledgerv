@@ -34,7 +34,9 @@ fi
 # 2. Perform test database migration
 if [ ! -f "${SCRIPT_DIR}/marker/${DB_MIGRATED_MARKER_NAME}" ]; then
   echo "Migrating Test Database"
-  (cd "${PROJECT_ROOT}/server" && npx prisma generate && npm run --silent migrate:test -- deploy)
+  (cd "${PROJECT_ROOT}/server" \
+  && npx prisma generate \
+  && npm run --silent migrate:test -- deploy --schema=src/model/schema.prisma)
 
   # 2.5 Create a marker file to know that the database has been migrated for faster tests
   (cd "${SCRIPT_DIR}/marker" && touch ${DB_MIGRATED_MARKER_NAME})
