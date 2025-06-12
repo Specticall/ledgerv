@@ -15,11 +15,11 @@ if [ "$TEST_DB_STARTED" != "$TEST_DB_SERVICE_NAME" ]; then
   echo "Staring Test Container, Please Wait..."
   (cd "${PROJECT_ROOT}" && \
     # Stop Previously Running Containers (If they exist)
-    npx dotenvx run -f .env.test -- docker-compose \
+    npx dotenvx run -f .env.test -- docker compose \
     -f "./docker/compose/docker-compose.test.yaml" \
     down --remove-orphans && \
     # Start Containers
-    npx dotenvx run -f .env.test -- docker-compose \
+    npx dotenvx run -f .env.test -- docker compose \
     -f "./docker/compose/docker-compose.test.yaml" \
     up -d
   )
