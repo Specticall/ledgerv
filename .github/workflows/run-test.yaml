@@ -22,11 +22,11 @@ jobs:
       - name: Inject Test Environment Variables
         run: |
           touch .env.test
-          echo "${{ secrets.ENV_FILE }}" >> .env.test
+          echo '${{ secrets.ENV_FILE }}'' >> .env.test
 
       - name: Test ENV
         run: |
-          echo "${{ secrets.ENV_FILE }}"
+          echo '${{ secrets.ENV_FILE }}'
 
       - name: Run Tests
         run: npm run test
