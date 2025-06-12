@@ -37,6 +37,7 @@ if [ ! -f "${SCRIPT_DIR}/marker/${DB_MIGRATED_MARKER_NAME}" ]; then
   (cd "${PROJECT_ROOT}/server" \
   && npx prisma generate \
   && npm run migrate:test -- dev --name init)
+  # HACK : the "prisma migrate deploy" command is bugged when used with prismaSchemaFolder
 
   # 2.5 Create a marker file to know that the database has been migrated for faster tests
   (cd "${SCRIPT_DIR}/marker" && touch ${DB_MIGRATED_MARKER_NAME})

@@ -6,6 +6,7 @@ import { STATUS } from "../../utils/http/statusCodes";
 import { StorageService } from "../../service";
 import { checkMinIOHealth } from "../../utils/general";
 import TestDataStore from "../utils/TestDataStore";
+import { prisma } from "../../config/config";
 
 const testApp = supertest(app);
 
@@ -139,6 +140,13 @@ describe("Multiple user resource creation", () => {
 
 describe("Storage capacity", () => {
   it("Should display the appropriate amount of storage for a given user", async () => {
+    // Clear previously created files to prevent flaky tests
+    await prisma.resource.deleteMany({
+      where: {
+        type: "file",
+      },
+    });
+
     // Get auth cookie for user
     const authCookie = (await TestDataStore.get()).authCookies.userA;
     if (!authCookie) {
